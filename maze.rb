@@ -49,9 +49,9 @@ class Maze
   # 迷路の配列のインデックスを作成
   def makeidx(x, y)
     idx = []
-    (x - OFFSET).times do |i|
-      (y - OFFSET).times do |j|
-        idx << [i, j]
+    (OFFSET..(x - OFFSET)).each do |i|
+      (OFFSET..(y - OFFSET)).each do |j|
+        idx << [j, i] if i.even? && j.even?
       end
     end
     return idx
@@ -62,20 +62,20 @@ class Maze
     # puts "plot: x: #{x}, y: #{y}"
     @ary[y][x] = WALL
     self.output
-    @idx.delete([y, x])
+    @idx.delete([x, y])
     @limit -= 1
     @len   -= 1
+    puts "@limit: #{@limit}"
+    puts "@idx: #{@idx}"
   end
 
   # 壁をランダムに置く、重複して置かないようにする
   def random
     loop do
       x, y = idx[rand(0..(idx.count - 1))]
-      # puts "x: #{x}, y: #{y}"
-      # puts "idx.count: #{idx.count}"
-      next if x.odd? || y.odd?
-      next if x == 0 || y == 0
-      next if x == @x|| y == @x
+      #puts "x: #{x}, y: #{y}"
+      #puts "idx.count: #{idx.count}"
+      #output
       return x, y if room?(x, y)
     end
   end
@@ -87,8 +87,8 @@ class Maze
       # puts 'judge success'
       true
     else
-      puts 'judge failure'
-      self.output
+      #puts 'judge failure'
+      #self.output
       false
     end
   end
@@ -229,14 +229,14 @@ class Maze
             x, y, len = plotforward(x, y, dir)
           end 
         end
-        return if @len <=0
+        return if @idx.count <= 0 || @len <=0
       end
     end
   end
 
   # 迷路を作成
   def plotmaze
-    while @limit > 0
+    while @idx.count > 0
       plotline
     end
   end
@@ -260,6 +260,6 @@ class Maze
 end
 
 # メイン
-maze = Maze.new(5, 5)
+maze = Maze.new(4, 4)
 maze.plotmaze
 maze.output
