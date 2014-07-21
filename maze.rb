@@ -19,7 +19,7 @@ class Maze
   #インスタンス変数の初期化
   def initialize(x, y)
     @x, @y = (x * 2) + 1, (y * 2) + 1 #奇数化
-    print "@x: #{@x}, @y: #{@y}\n"
+    # print "@x: #{@x}, @y: #{@y}\n"
     @limit = (@x - 3) * (@y - 3) / 2 #作成可能な内壁の総数
     @len = (@x < @y ? @x : @y) - 2 #一回に作る壁の長さを制限
     @ary = prepare_ary(@x, @y)
@@ -46,7 +46,7 @@ class Maze
 
  # 壁を1つ置く 
   def plot(x, y)
-    puts "plot: x: #{x}, y: #{y}"
+    # puts "plot: x: #{x}, y: #{y}"
     @ary[y][x] = WALL
     self.output
   end
@@ -54,20 +54,21 @@ class Maze
   # 壁をランダムに置く
   def random
     loop do
-      x = rand(2..((@x - 3)/2)) * 2
-      y = rand(2..((@y - 3)/2)) * 2
+      x = rand(1..((@x - 3)/2)) * 2
+      y = rand(1..((@y - 3)/2)) * 2
       return x, y if room?(x, y)
     end
   end
 
   # 判定1: 現在位置に壁を置けるか
   def room?(x, y)
-    print "x: #{x}, y: #{y} "
+    # print "x: #{x}, y: #{y} "
     if @ary[y][x] == ROAD
-      puts 'judge success'
+      # puts 'judge success'
       true
     else
       puts 'judge failure'
+      self.output
       false
     end
   end
@@ -117,7 +118,7 @@ class Maze
   # 判定6: 進む先は内壁か
   def innerwall?(i, j)
     if (@ary[j][i] == PARTITION) && inner?(i, j)
-      puts 'partition found'
+      # puts 'partition found'
       true
     else
       false
@@ -156,6 +157,7 @@ class Maze
     when :w
       x, y = west(x, y)
     end
+    # puts "forward: x: #{x}, y: #{y}"
     return x, y
   end
 
@@ -164,14 +166,14 @@ class Maze
    loop do
      dir = DIR[rand(0..3)]
      x, y = forward(x, y, dir)
-     puts "fortune: x: #{x}, y: #{y}, dir: #{dir}"
+     # puts "fortune: x: #{x}, y: #{y}, dir: #{dir}"
      return dir unless back?(dir)
    end 
   end
 
   # 指定の方向に1STEP進み、プロットして座標を返す
   def plotforward(x, y, dir)
-    puts "plotforward: x: #{x} y: #{y}"
+    # puts "plotforward: x: #{x} y: #{y}"
     x, y = forward(x, y, dir)
     plot(x, y)
     return x, y
@@ -180,20 +182,27 @@ class Maze
   # 内壁を1本作成
   def plotline
     len = @len
+    @prev = nil
     x, y = random
     plot(x, y)
+    @limit -= 1
     
-    loop do
+    while len > 0 do
       dir = fortune(x, y)
       
       fx, fy = forward(x, y, dir)
       fx, fy = forward(fx, fy, dir)
       if outerwall?(fx, fy) # 2つ先に外壁があればぶつかって終わる
         x, y = plotforward(x, y, dir)
+            @limit -= 1
         return
       else
-        if innerwall?(fx, fy)
-          next
+        if innerwall?(fx, fy) # 内壁に当たった場合
+          unless way?(x, y, dir) # 左右に進めなければ終わる
+            return
+          else
+            next
+          end
         else
           unless way?(x, y, dir) # 左右に進めなければ終わる
             return
@@ -202,7 +211,8 @@ class Maze
             x, y = plotforward(x, y, dir)
             len -= 2
             @prev = dir
-            puts "@prev: #{@prev}"
+            @limit -= 2
+            # puts "@prev: #{@prev}"
           end
           return if len <= 0
         end
@@ -212,7 +222,9 @@ class Maze
 
   # 迷路を作成
   def plotmaze
-    plotline
+    while @limit > 0 do
+      plotline
+    end
   end
 
   # 迷路を出力
@@ -235,6 +247,6 @@ class Maze
 end
 
 # メイン
-maze = Maze.new(10,5)
+maze = Maze.new(10,10)
 maze.plotmaze
 maze.output
