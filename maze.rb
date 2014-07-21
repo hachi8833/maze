@@ -12,7 +12,7 @@
 require 'pry'
 class Maze
   attr_accessor :x, :y, :len, :ary, :limit, :prev
-  N, E, S, W = 1, 2, 3, 4 # 方角
+  DIR = [:n, :e, :s, :w] # 方角
   STEP, OFFSET = 1, 2
   WALL, PARTITION, ROAD = 1, 1, nil
 
@@ -75,13 +75,13 @@ class Maze
   # 判定2: 前左右に進めるか
   def way?(x, y, dir)
     case dir
-    when N
+    when :n
       return true if north(x, y) || east(x, y) || west(x, y)
-    when E
+    when :e
       return true if east(x, y) || north(x, y) || south(x, y)
-    when S
+    when :s
       return true if south(x, y) || east(x, y) || west(x, y)
-    when W
+    when :w
       return true if west(x, y) || north(x, y) || south(x, y)
     end
   end
@@ -94,10 +94,10 @@ class Maze
   # 判定4: 前回の向きと逆走しているか
   def back?(dir)
     return false unless @prev
-    if (dir == N and @prev == S) ||
-       (dir == S and @prev == N) ||
-       (dir == E and @prev == W) ||
-       (dir == W and @prev == E)
+    if (dir == :n and @prev == :s) ||
+       (dir == :s and @prev == :n) ||
+       (dir == :e and @prev == :w) ||
+       (dir == :w and @prev == :e)
       return true 
     end
   end
@@ -111,6 +111,16 @@ class Maze
       return true
     else
       return false
+    end
+  end
+  
+  # 判定6: 進む先は内壁か
+  def innerwall?(i, j)
+    if (@ary[j][i] == PARTITION) && inner?(i, j)
+      puts 'partition found'
+      true
+    else
+      false
     end
   end
 
@@ -137,13 +147,13 @@ class Maze
   # 進んだ先の座標を取得
   def forward(x, y, dir)
     case dir
-    when N
+    when :n
       x, y = north(x, y)
-    when E
+    when :e
       x, y = east(x, y)
-    when S
+    when :s
       x, y = south(x, y)
-    when W
+    when :w
       x, y = west(x, y)
     end
     return x, y
@@ -152,7 +162,7 @@ class Maze
   # 方角をランダムに決め、逆走防止
   def fortune(x, y)
    loop do
-     dir = rand(1..4)
+     dir = DIR[rand(0..3)]
      x, y = forward(x, y, dir)
      puts "fortune: x: #{x}, y: #{y}, dir: #{dir}"
      return dir unless back?(dir)
@@ -182,16 +192,20 @@ class Maze
         x, y = plotforward(x, y, dir)
         return
       else
-        unless way?(x, y, dir) # 左右に進めなければ終わる
-          return
-        else #2歩進む
-          x, y = plotforward(x, y, dir)
-          x, y = plotforward(x, y, dir)
-          len -= 2
-          @prev = dir
-          puts "@prev: #{@prev}"
+        if innerwall?(fx, fy)
+          next
+        else
+          unless way?(x, y, dir) # 左右に進めなければ終わる
+            return
+          else #2歩進む
+            x, y = plotforward(x, y, dir)
+            x, y = plotforward(x, y, dir)
+            len -= 2
+            @prev = dir
+            puts "@prev: #{@prev}"
+          end
+          return if len <= 0
         end
-        return if len <= 0
       end
     end
   end
