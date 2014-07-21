@@ -11,7 +11,7 @@
 
 require 'pry'
 class Maze
-  attr_accessor :x, :y, :len, :ary, :limit, :prev
+  attr_accessor :x, :y, :len, :ary, :limit, :prev, :idx
   DIR = [:n, :e, :s, :w] # 方角
   STEP, OFFSET = 1, 2
   WALL, PARTITION, ROAD = 1, 1, nil
@@ -23,6 +23,7 @@ class Maze
     @limit = (@x - 3) * (@y - 3) / 2 #作成可能な内壁の総数
     @len = (@x < @y ? @x : @y) - 2 #一回に作る壁の長さを制限
     @ary = prepare_ary(@x, @y)
+    @idx = makeidx(@x, @y)
     @prev = nil #直前の向き
   end
 
@@ -44,14 +45,28 @@ class Maze
     return ary
   end
 
+  # 迷路の配列のインデックスを作成
+  def makeidx(x, y)
+    idx = []
+    (x - OFFSET).times do |i|
+      (y - OFFSET).times do |j|
+        idx << [i, j]
+      end
+    end
+    return idx
+  end
+
  # 壁を1つ置く 
-  def plot(x, y)
+  def plot(x, y, len)
     # puts "plot: x: #{x}, y: #{y}"
     @ary[y][x] = WALL
     self.output
+    @idx.delete([y, x])
+    @limit -= 1
+    return len - 1
   end
 
-  # 壁をランダムに置く
+  # 壁をランダムに置く、重複して置かないようにする
   def random
     loop do
       x = rand(1..((@x - 3)/2)) * 2
@@ -184,47 +199,17 @@ class Maze
     len = @len
     @prev = nil
     x, y = random
-    plot(x, y)
-    @limit -= 1
-    
+    len = plot(x, y, len)
+
     while len > 0 do
-      dir = fortune(x, y)
-      
-      fx, fy = forward(x, y, dir)
-      fx, fy = forward(fx, fy, dir)
-      if outerwall?(fx, fy) # 2つ先に外壁があればぶつかって終わる
-        x, y = plotforward(x, y, dir)
-            @limit -= 1
-        return
-      else
-        if innerwall?(fx, fy) # 内壁に当たった場合
-          unless way?(x, y, dir) # 左右に進めなければ終わる
-            return
-          else
-            next
-          end
-        else
-          unless way?(x, y, dir) # 左右に進めなければ終わる
-            return
-          else #2歩進む
-            x, y = plotforward(x, y, dir)
-            x, y = plotforward(x, y, dir)
-            len -= 2
-            @prev = dir
-            @limit -= 2
-            # puts "@prev: #{@prev}"
-          end
-          return if len <= 0
-        end
-      end
+
     end
+
   end
 
   # 迷路を作成
   def plotmaze
-    while @limit > 0 do
-      plotline
-    end
+    plotline
   end
 
   # 迷路を出力
@@ -243,10 +228,9 @@ class Maze
       print "\n"
     end
   end
-
 end
 
 # メイン
-maze = Maze.new(10,10)
+maze = Maze.new(5, 5)
 maze.plotmaze
 maze.output
