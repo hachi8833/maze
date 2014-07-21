@@ -21,7 +21,8 @@ class Maze
     @x, @y = (x * 2) + 1, (y * 2) + 1 #奇数化
     # print "@x: #{@x}, @y: #{@y}\n"
     @limit = (@x - 3) * (@y - 3) / 2 #作成可能な内壁の総数
-    @len = (@x < @y ? @x : @y) - 2 #一回に作る壁の長さを制限
+    @length = (@x < @y ? @x : @y) - 2 #一回に作る壁の長さを制限
+    @len = @length
     @ary = prepare_ary(@x, @y)
     @idx = makeidx(@x, @y)
     @prev = nil #直前の向き
@@ -57,20 +58,24 @@ class Maze
   end
 
  # 壁を1つ置く 
-  def plot(x, y, len)
+  def plot(x, y)
     # puts "plot: x: #{x}, y: #{y}"
     @ary[y][x] = WALL
     self.output
     @idx.delete([y, x])
     @limit -= 1
-    return len - 1
+    @len   -= 1
   end
 
   # 壁をランダムに置く、重複して置かないようにする
   def random
     loop do
-      x = rand(1..((@x - 3)/2)) * 2
-      y = rand(1..((@y - 3)/2)) * 2
+      x, y = idx[rand(0..(idx.count - 1))]
+      # puts "x: #{x}, y: #{y}"
+      # puts "idx.count: #{idx.count}"
+      next if x.odd? || y.odd?
+      next if x == 0 || y == 0
+      next if x == @x|| y == @x
       return x, y if room?(x, y)
     end
   end
@@ -194,22 +199,46 @@ class Maze
     return x, y
   end
 
-  # 内壁を1本作成
+  # 内壁を1つ作成
   def plotline
-    len = @len
+    @len = @length
     @prev = nil
     x, y = random
-    len = plot(x, y, len)
+    plot(x, y)
 
     while len > 0 do
-
+      dir = fortune(x, y)
+      
+      fx, fy = forward(x, y, dir)
+      fx, fy = forward(fx, fy, dir)
+      if outerwall?(fx, fy)      # 2つ先に外壁があればぶつかって終わる
+        x, y, len = plotforward(x, y, dir)
+        return
+      else
+        if innerwall?(fx, fy)    # 内壁に当たった場合
+          unless way?(x, y, dir) # 左右に進めなければ終わる
+            return
+          else                   # 左右に空きがあればやり直す
+            next
+          end
+        else
+          unless way?(x, y, dir) # 左右に進めなければ終わる
+            return
+          else                   #2歩進む
+            x, y, len = plotforward(x, y, dir)
+            x, y, len = plotforward(x, y, dir)
+          end 
+        end
+        return if @len <=0
+      end
     end
-
   end
 
   # 迷路を作成
   def plotmaze
-    plotline
+    while @limit > 0
+      plotline
+    end
   end
 
   # 迷路を出力
