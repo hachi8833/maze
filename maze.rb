@@ -23,7 +23,7 @@ class Maze
     @limit = (@x - 3) * (@y - 3) / 2 #作成可能な内壁の総数
     @len = (@x < @y ? @x : @y) - 2 #一回に作る壁の長さを制限
     @ary = prepare_ary(@x, @y)
-    @prev = nil #直前の座標
+    @prev = nil #直前の向き
   end
 
   # 迷路の配列を確保
@@ -56,12 +56,12 @@ class Maze
     loop do
       x = rand(2..((@x - 3)/2)) * 2
       y = rand(2..((@y - 3)/2)) * 2
-      return x, y if wall?(x, y)
+      return x, y if room?(x, y)
     end
   end
 
-  # 判定1: 現在位置に既に壁があるか
-  def wall?(x, y)
+  # 判定1: 現在位置に壁を置けるか
+  def room?(x, y)
     print "x: #{x}, y: #{y} "
     if @ary[y][x] == ROAD
       puts 'judge success'
@@ -91,14 +91,13 @@ class Maze
     return true if i == 0 || i == @x - 1 || j == 0 || j == @y - 1
   end
 
-  # 判定4: 進む先が逆走か
-  def back?(i, j)
-    # return true if @prev == {x: i, y: j}
+  # 判定4: 前回の向きと逆走しているか
+  def back?(dir)
     return false unless @prev
-    if (@prev[:x] == i && @prev[:y] >= j ) ||
-       (@prev[:x] == i && @prev[:y] <= j ) ||
-       (@prev[:x] >= i && @prev[:y] == j ) ||
-       (@prev[:x] <= i && @prev[:y] == j )
+    if (dir == N and @prev == S) ||
+       (dir == S and @prev == N) ||
+       (dir == E and @prev == W) ||
+       (dir == W and @prev == E)
       return true 
     end
   end
@@ -156,7 +155,7 @@ class Maze
      dir = rand(1..4)
      x, y = forward(x, y, dir)
      puts "fortune: x: #{x}, y: #{y}, dir: #{dir}"
-     return dir unless back?(x, y)
+     return dir unless back?(dir)
    end 
   end
 
@@ -176,22 +175,24 @@ class Maze
     
     loop do
       dir = fortune(x, y)
-      unless way?(x, y, dir)
-        fx, fy = forward(x, y, dir)
-        if outerwall?(fx, fy)
-          x, y = plotforward(x, y, dir)
-          return
-        else
-          return
-        end
+      
+      fx, fy = forward(x, y, dir)
+      fx, fy = forward(fx, fy, dir)
+      if outerwall?(fx, fy) # 2つ先に外壁があればぶつかって終わる
+        x, y = plotforward(x, y, dir)
+        return
       else
-        x, y = plotforward(x, y, dir)
-        x, y = plotforward(x, y, dir)
-        len -= 2
-        @prev = {x: x, y: y}
-        puts @prev
+        unless way?(x, y, dir) # 左右に進めなければ終わる
+          return
+        else #2歩進む
+          x, y = plotforward(x, y, dir)
+          x, y = plotforward(x, y, dir)
+          len -= 2
+          @prev = dir
+          puts "@prev: #{@prev}"
+        end
+        return if len <= 0
       end
-      return if len <= 0
     end
   end
 
