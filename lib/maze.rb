@@ -1,19 +1,27 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
-# 参考: http://aanda.system.to/maze/wmaze.txt
 require 'pry'
 
+#= 迷路自動作成ライブラリ
+# 「壁伸ばし法」に基づく
+# 参考: http://aanda.system.to/maze/wmaze.txt
 class Maze
 
-  attr_accessor :x, :y, :ary
+  # 初期値x, y
+  attr_accessor :x, :y
+  # 作成された迷路が保存されている2次元配列
+  attr_accessor :ary
+  # 迷路の外側の壁の厚さ
   MARGIN = 1
+  # 迷路作成上のオフセット値 
   OFFSET = 3
+  # 迷路作成上の増分値
   INCR   = 2
   ROAD, WALL, PREWALL = nil, 1, 2
   R, W, P, LF = "　","〓","〓","\n"
 
-  # 初期化
+  # 初期化 (prepare_aryとinit_aryもこの中から呼ばれている)
   def initialize(x, y)
     @x, @y = x, y
     @ary = prepare_ary(x, y)
@@ -35,11 +43,11 @@ class Maze
 
     #最後の行
     ary << [WALL] * y
-
     return ary
   end
 
   # 配列内容を初期化
+  # 最外周は道になるので、外側の壁は1つ内側になる
   def init_ary(x, y)
     x.times do |i|
       y.times do |j|
@@ -68,7 +76,7 @@ class Maze
     @ary[x][y] = piece
   end
 
-  # 壁を1本置けるだけ置く
+  # 壁を1つ作成、伸ばせるところまで伸ばす
   def maze_sub(x, y)
     rnd = rand(0..3)
     pol = 1 # 回転の向き
@@ -115,7 +123,7 @@ class Maze
     return false
   end
 
-  # 置き場所がなくなるまでmaze_subを呼ぶ
+  # 壁の開始地点をトラバースしてmaze_subを呼び続ける
   def plotmaze
     OFFSET.step(@y - 3, INCR) do |j|
       OFFSET.step(@x - 3, INCR) do |i|
