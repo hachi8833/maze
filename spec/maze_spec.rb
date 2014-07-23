@@ -64,6 +64,7 @@ describe :Maze do
 
   context :maze_sub do
     @maze = Maze.new(9, 9)
+    expect(@maze.maze_sub(3,3)).to be true
   end
 
 end
