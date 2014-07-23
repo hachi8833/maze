@@ -6,6 +6,14 @@ require 'pry'
 #= 迷路自動作成ライブラリ
 # 「壁伸ばし法」に基づく
 # 参考: http://aanda.system.to/maze/wmaze.txt
+#== 使用例 (main.rbより)
+# x, y = 31, 41
+#
+# x += 1 if x.even?
+# y += 1 if y.even?
+# maze = Maze.new(x, y)
+# maze.plotmaze
+# maze.output
 class Maze
 
   # 初期値x, y。正の奇数かつ7以上にすること
