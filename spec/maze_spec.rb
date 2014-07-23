@@ -13,8 +13,10 @@ describe :Maze do
   context "インスタンス作成" do
 
     maze = Maze.new(7, 7)
+    maze.init_ary(7, 7)
 
     it "インスタンスを作成できる" do
+      binding.pry
       expect(maze.x).to eq 7
       expect(maze.y).to eq 7
     end

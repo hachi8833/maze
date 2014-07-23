@@ -3,6 +3,7 @@
 
 # 参考: http://aanda.system.to/maze/wmaze.txt
 require 'pry'
+
 class Maze
 
   attr_accessor :x, :y, :ary
@@ -10,12 +11,16 @@ class Maze
   OFFSET = 3
   INCR   = 2
   ROAD, WALL, PREWALL = nil, 1, 2
+  R, W, P, LF = "　","〓","〓","\n"
 
+  # 初期化
   def initialize(x, y)
     @x, @y = x, y
     @ary = prepare_ary(x, y)
+    init_ary(x, y)
   end
 
+  # 配列確保
   def prepare_ary(x, y)
     ary, tmp = [], []
 
@@ -34,6 +39,7 @@ class Maze
     return ary
   end
 
+  # 配列内容を初期化
   def init_ary(x, y)
     x.times do |i|
       y.times do |j|
@@ -52,14 +58,17 @@ class Maze
     end 
   end
 
+  # 座標にあるものを調べる
   def getpoint(x, y)
     @ary[x][y]
   end
 
+  # 座標に壁などを設置
   def setpoint(x, y, piece)
     @ary[x][y] = piece
   end
 
+  # 壁を1本置けるだけ置く
   def maze_sub(x, y)
     rnd = rand(0..3)
     pol = 1 # 回転の向き
@@ -106,6 +115,7 @@ class Maze
     return false
   end
 
+  # 置き場所がなくなるまでmaze_subを呼ぶ
   def plotmaze
     OFFSET.step(@y - 3, INCR) do |j|
       OFFSET.step(@x - 3, INCR) do |i|
@@ -117,29 +127,20 @@ class Maze
     end
   end
 
+  # aryを整形して出力
   def output
     @ary.each do |i|
       i.each do |j|
         case j
         when WALL
-          print "*"
+          print W
         when PREWALL
-          print "*"
+          print P
         else
-          print " "
+          print R 
         end
       end
-      print "\n"
+      print LF
     end
   end
 end
-
-# main
-x, y = 31, 71
-
-x += 1 if x.even?
-y += 1 if y.even?
-maze = Maze.new(x, y)
-maze.init_ary(x, y)
-maze.plotmaze
-maze.output
