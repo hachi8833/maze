@@ -8,7 +8,7 @@ require 'pry'
 # 参考: http://aanda.system.to/maze/wmaze.txt
 class Maze
 
-  # 初期値x, y
+  # 初期値x, y。正の奇数かつ7以上にすること
   attr_accessor :x, :y
   # 作成された迷路が保存されている2次元配列
   attr_accessor :ary
