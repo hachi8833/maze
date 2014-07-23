@@ -59,5 +59,11 @@ describe :Maze do
         expect{maze.setpoint(6, 6, 1)}.to raise_error(NoMethodError)
       end
     end
+
+    context :maze_sub do
+      maze = Maze.new(9, 9)
+      maze.init_ary(9, 9)
+
+    end
   end
 end

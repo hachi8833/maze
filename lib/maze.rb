@@ -65,9 +65,6 @@ class Maze
     pol = 1 # 回転の向き
 
     4.times do |cnt| # 方向転換の回数
-
-      puts "rnd: #{rnd}, cnt: #{cnt}, pol: #{pol}"
-      puts "(rnd + (cnt * pol) + 4) % 4 : #{(rnd + (cnt * pol) + 4) % 4 }"
       case (rnd + (cnt * pol) + 4) % 4
       when 0
         px, py = 0, -1
@@ -79,7 +76,7 @@ class Maze
         px, py = 1, 0
       end
 
-      # 壁にぶつかったら処理を完了して戻る
+      # 壁にぶつかったら壁までつないで戻る
       if getpoint(x + (px * 2), y + (py * 2)) == WALL
         setpoint(x, y, WALL)
         setpoint(x + px, y + py, WALL) 
@@ -110,18 +107,13 @@ class Maze
   end
 
   def plotmaze
-    (OFFSET..(@y - 3)).each do |i|
-      (OFFSET..(@x - 3)).each do |j|
-        puts "i: #{i}, j: #{j}"
+    OFFSET.step(@y - 3, INCR) do |j|
+      OFFSET.step(@x - 3, INCR) do |i|
         if getpoint(i, j) == ROAD
-          # binding.pry
-          # while maze_sub(i, j) do
-
-          # end
+          result = maze_sub(i, j)
+          next if result
         end
-        j += INCR
       end 
-      i += INCR
     end
   end
 
@@ -142,7 +134,12 @@ class Maze
   end
 end
 
-maze = Maze.new(9, 9)
-maze.init_ary(9, 9)
+# main
+x, y = 31, 71
+
+x += 1 if x.even?
+y += 1 if y.even?
+maze = Maze.new(x, y)
+maze.init_ary(x, y)
 maze.plotmaze
 maze.output
