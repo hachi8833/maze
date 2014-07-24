@@ -62,8 +62,10 @@ describe :Maze do
     end
   end
 
-  context :maze_sub do
+  context :plotmaze do
     @maze = Maze.new(9, 9)
+    # ペンディング: RSpec 3.0でmaze_subをどうやってスタブ化する?
+    # allow(@maze).to receive(:maze_sub) { true }
+    # allow(@maze.plotmaze).receive(:maze_sub) { true }
   end
-
 end
