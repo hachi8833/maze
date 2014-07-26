@@ -2,6 +2,7 @@
 # coding: utf-8
 
 require 'spec_helper'
+# require 'rspec'
 require 'maze'
 
 describe :Maze do
@@ -66,6 +67,7 @@ describe :Maze do
     @maze = Maze.new(9, 9)
     # ペンディング: RSpec 3.0でmaze_subをどうやってスタブ化する?
     # allow(@maze).to receive(:maze_sub) { true }
-    # allow(@maze.plotmaze).receive(:maze_sub) { true }
+    # @maze.plotmaze.stub(maze_sub: true)
+    #allow(@maze.plotmaze).receive(:maze_sub) { true }
   end
 end

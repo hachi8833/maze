@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
-require 'pry'
-
 #= 迷路自動作成ライブラリ
 # 「壁伸ばし法」に基づく
 # 参考: http://aanda.system.to/maze/wmaze.txt
@@ -19,7 +17,7 @@ class Maze
   # 初期値x, y。正の奇数かつ7以上にすること
   attr_accessor :x, :y
   # 作成された迷路が保存されている2次元配列
-  attr_accessor :ary
+  attr_accessor :ary_2d
   # 迷路の外側の壁の厚さ
   MARGIN = 1
   # 迷路作成上のオフセット値 
@@ -32,26 +30,26 @@ class Maze
   # 初期化 (prepare_aryとinit_aryもこの中から呼ばれている)
   def initialize(x, y)
     @x, @y = x, y
-    @ary = prepare_ary(x, y)
+    @ary_2d = prepare_ary(x, y)
     init_ary(x, y)
   end
 
   # 配列確保
   def prepare_ary(x, y)
-    ary, tmp = [], []
+    ary_2d, tmp = [], []
 
     #最初の行
-    ary << [WALL] * y
+    ary_2d << [WALL] * y
 
     #途中の行
     tmp << WALL
     (y - 2).times { tmp << ROAD }
     tmp << WALL
-    (x - 2).times {ary << tmp.dup }
+    (x - 2).times {ary_2d << tmp.dup }
 
     #最後の行
-    ary << [WALL] * y
-    return ary
+    ary_2d << [WALL] * y
+    return ary_2d
   end
 
   # 配列内容を初期化
@@ -76,12 +74,12 @@ class Maze
 
   # 座標にあるものを調べる
   def getpoint(x, y)
-    @ary[x][y]
+    @ary_2d[x][y]
   end
 
   # 座標に壁などを設置
   def setpoint(x, y, piece)
-    @ary[x][y] = piece
+    @ary_2d[x][y] = piece
   end
 
   # 壁を1つ作成、伸ばせるところまで伸ばす
@@ -143,9 +141,9 @@ class Maze
     end
   end
 
-  # aryを整形して出力
+  # ary_2dを整形して出力
   def output
-    @ary.each do |i|
+    @ary_2d.each do |i|
       i.each do |j|
         case j
         when WALL
