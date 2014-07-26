@@ -17,11 +17,12 @@ class Maze
   # 初期値x, y。正の奇数かつ7以上にすること
   attr_accessor :x, :y
   # 作成された迷路が保存されている2次元配列
-  attr_accessor :ary_2d
+  attr_accessor :array_2d
   ROAD, WALL, PREWALL = nil, 1, 2
+  # 表示用文字
   R, W, P, LF = "　","〓","〓","\n"
 
-  # 初期化 (prepare_aryとinit_aryもこの中から呼ばれている)
+  # 初期化 (prepare_arrayとinit_arrayもこの中から呼ばれている)
   def initialize(x, y)
     # 迷路の外側の壁の厚さ
     @margin = 1.freeze
@@ -31,18 +32,18 @@ class Maze
 
     @increment   = 2.freeze
     @x, @y = x.freeze, y.freeze
-    @ary_2d = prepare_ary(x, y)
-    init_ary(x, y)
+    @array_2d = prepare_array(x, y)
+    init_array(x, y)
   end
 
   # 座標にあるものを調べる
   def getpoint(x, y)
-    @ary_2d[x][y]
+    @array_2d[x][y]
   end
 
   # 座標に壁などを設置
   def setpoint(x, y, piece)
-    @ary_2d[x][y] = piece
+    @array_2d[x][y] = piece
   end
 
   # 壁を1つ作成、伸ばせるところまで伸ばす
@@ -104,9 +105,9 @@ class Maze
     end
   end
 
-  # ary_2dを整形して出力
+  # array_2dを整形して出力
   def output
-    @ary_2d.each do |i|
+    @array_2d.each do |i|
       i.each do |j|
         case j
         when WALL
@@ -124,26 +125,26 @@ class Maze
   private
 
   # 配列確保
-  def prepare_ary(x, y)
-    ary_2d, tmp = [], []
+  def prepare_array(x, y)
+    array_2d, tmp = [], []
 
     #最初の行
-    ary_2d << [WALL] * y
+    array_2d << [WALL] * y
 
     #途中の行
     tmp << WALL
     (y - 2).times { tmp << ROAD }
     tmp << WALL
-    (x - 2).times {ary_2d << tmp.dup }
+    (x - 2).times {array_2d << tmp.dup }
 
     #最後の行
-    ary_2d << [WALL] * y
-    return ary_2d
+    array_2d << [WALL] * y
+    return array_2d
   end
 
   # 配列内容を初期化
   # 最外周は道になるので、外側の壁は1つ内側になる
-  def init_ary(x, y)
+  def init_array(x, y)
     x.times do |i|
       y.times do |j|
         setpoint(i, j, ROAD)
