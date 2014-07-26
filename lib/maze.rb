@@ -18,22 +18,22 @@ class Maze
   attr_accessor :x, :y
   # 作成された迷路が保存されている2次元配列
   attr_accessor :ary_2d
-  # 迷路の外側の壁の厚さ
-  MARGIN = 1
-  # 迷路作成上のオフセット値 
-  OFFSET = 3
-  # 迷路作成上の増分値
-  INCR   = 2
   ROAD, WALL, PREWALL = nil, 1, 2
   R, W, P, LF = "　","〓","〓","\n"
 
   # 初期化 (prepare_aryとinit_aryもこの中から呼ばれている)
   def initialize(x, y)
-    @x, @y = x, y
+    # 迷路の外側の壁の厚さ
+    @margin = 1.freeze
+    # 迷路作成上のオフセット値 
+    @offset = 3.freeze
+    # 迷路作成上の増分値
+
+    @increment   = 2.freeze
+    @x, @y = x.freeze, y.freeze
     @ary_2d = prepare_ary(x, y)
     init_ary(x, y)
   end
-
 
   # 座標にあるものを調べる
   def getpoint(x, y)
@@ -94,8 +94,8 @@ class Maze
 
   # 壁の開始地点をトラバースしてmaze_subを呼び続ける
   def plotmaze
-    OFFSET.step(@y - 3, INCR) do |j|
-      OFFSET.step(@x - 3, INCR) do |i|
+    @offset.step(@y - 3, @increment) do |j|
+      @offset.step(@x - 3, @increment) do |i|
         if getpoint(i, j) == ROAD
           result = maze_sub(i, j)
           next if result
@@ -150,12 +150,12 @@ class Maze
       end
     end
 
-    (MARGIN..(@x - 2)).each do |i|
+    (@margin..(@x - 2)).each do |i|
       setpoint(i, 1, WALL)
       setpoint(i, @y - 2, WALL)
     end 
 
-    (MARGIN..(@y - 2)).each do |j|
+    (@margin..(@y - 2)).each do |j|
       setpoint(1, j, WALL)
       setpoint(@x - 2, j, WALL)
     end 
