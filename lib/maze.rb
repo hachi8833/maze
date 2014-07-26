@@ -34,43 +34,6 @@ class Maze
     init_ary(x, y)
   end
 
-  # 配列確保
-  def prepare_ary(x, y)
-    ary_2d, tmp = [], []
-
-    #最初の行
-    ary_2d << [WALL] * y
-
-    #途中の行
-    tmp << WALL
-    (y - 2).times { tmp << ROAD }
-    tmp << WALL
-    (x - 2).times {ary_2d << tmp.dup }
-
-    #最後の行
-    ary_2d << [WALL] * y
-    return ary_2d
-  end
-
-  # 配列内容を初期化
-  # 最外周は道になるので、外側の壁は1つ内側になる
-  def init_ary(x, y)
-    x.times do |i|
-      y.times do |j|
-        setpoint(i, j, ROAD)
-      end
-    end
-
-    (MARGIN..(@x - 2)).each do |i|
-      setpoint(i, 1, WALL)
-      setpoint(i, @y - 2, WALL)
-    end 
-
-    (MARGIN..(@y - 2)).each do |j|
-      setpoint(1, j, WALL)
-      setpoint(@x - 2, j, WALL)
-    end 
-  end
 
   # 座標にあるものを調べる
   def getpoint(x, y)
@@ -156,5 +119,45 @@ class Maze
       end
       print LF
     end
+  end
+
+  private
+
+  # 配列確保
+  def prepare_ary(x, y)
+    ary_2d, tmp = [], []
+
+    #最初の行
+    ary_2d << [WALL] * y
+
+    #途中の行
+    tmp << WALL
+    (y - 2).times { tmp << ROAD }
+    tmp << WALL
+    (x - 2).times {ary_2d << tmp.dup }
+
+    #最後の行
+    ary_2d << [WALL] * y
+    return ary_2d
+  end
+
+  # 配列内容を初期化
+  # 最外周は道になるので、外側の壁は1つ内側になる
+  def init_ary(x, y)
+    x.times do |i|
+      y.times do |j|
+        setpoint(i, j, ROAD)
+      end
+    end
+
+    (MARGIN..(@x - 2)).each do |i|
+      setpoint(i, 1, WALL)
+      setpoint(i, @y - 2, WALL)
+    end 
+
+    (MARGIN..(@y - 2)).each do |j|
+      setpoint(1, j, WALL)
+      setpoint(@x - 2, j, WALL)
+    end 
   end
 end
