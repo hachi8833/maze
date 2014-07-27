@@ -20,8 +20,8 @@ class Maze
   attr_accessor :array_2d
   ROAD, WALL, PREWALL = nil, 1, 2
   # 表示用文字
-  R, W, P, LF = "　","〓","〓","\n"
 
+  CHARACTERS = { ROAD => '　', WALL => '〓', PREWALL => '〓' }.freeze
   # 初期化 (prepare_arrayとinit_arrayもこの中から呼ばれている)
   def initialize(x, y)
     # 迷路の外側の壁の厚さ
@@ -95,10 +95,10 @@ class Maze
 
   # 壁の開始地点をトラバースしてmaze_subを呼び続ける
   def plotmaze
-    @offset.step(@y - 3, @increment) do |j|
-      @offset.step(@x - 3, @increment) do |i|
-        if getpoint(i, j) == ROAD
-          result = maze_sub(i, j)
+    @offset.step(@y - 3, @increment) do |y|
+      @offset.step(@x - 3, @increment) do |x|
+        if getpoint(x, y) == ROAD
+          result = maze_sub(x, y)
           next if result
         end
       end 
@@ -107,18 +107,8 @@ class Maze
 
   # array_2dを整形して出力
   def output
-    @array_2d.each do |i|
-      i.each do |j|
-        case j
-        when WALL
-          print W
-        when PREWALL
-          print P
-        else
-          print R 
-        end
-      end
-      print LF
+    @array_2d.each do |line|
+      puts line.map { |c| CHARACTERS[c] }.join
     end
   end
 
@@ -145,9 +135,9 @@ class Maze
   # 配列内容を初期化
   # 最外周は道になるので、外側の壁は1つ内側になる
   def init_array(x, y)
-    x.times do |i|
-      y.times do |j|
-        setpoint(i, j, ROAD)
+    x.times do |xx|
+      y.times do |yy|
+        setpoint(xx, yy, ROAD)
       end
     end
 
