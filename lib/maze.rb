@@ -37,12 +37,12 @@ class Maze
   end
 
   # 座標にあるものを調べる
-  def getpoint(x, y)
+  def get_point(x, y)
     @array_2d[x][y]
   end
 
   # 座標に壁などを設置
-  def setpoint(x, y, piece)
+  def set_point(x, y, piece)
     @array_2d[x][y] = piece
   end
 
@@ -64,27 +64,27 @@ class Maze
       end
 
       # 壁にぶつかったら壁までつないで戻る
-      if getpoint(x + (px * 2), y + (py * 2)) == WALL
-        setpoint(x, y, WALL)
-        setpoint(x + px, y + py, WALL) 
+      if get_point(x + (px * 2), y + (py * 2)) == WALL
+        set_point(x, y, WALL)
+        set_point(x + px, y + py, WALL) 
         return true 
       end
 
       # 行き先が道なら「作りかけの壁」をその方向に伸ばす
-      if getpoint(x + (px * 2), y + (py * 2)) == ROAD
-        setpoint(x, y, PREWALL)
-        setpoint(x + px, y + py, PREWALL) 
+      if get_point(x + (px * 2), y + (py * 2)) == ROAD
+        set_point(x, y, PREWALL)
+        set_point(x + px, y + py, PREWALL) 
 
         #再帰
         if maze_sub(x + (px * 2), y + (py * 2))
           #戻った時に「作りかけの壁」を完成した壁に変える
-          setpoint(x, y, WALL)
-          setpoint(x + px, y + py, WALL)
+          set_point(x, y, WALL)
+          set_point(x + px, y + py, WALL)
           return true
         else
           #エラーで戻ったら「作りかけの壁」を道に戻す
-          setpoint(x, y, ROAD)
-          setpoint(x + px, y + py, ROAD)
+          set_point(x, y, ROAD)
+          set_point(x + px, y + py, ROAD)
           return false
         end 
       end
@@ -97,7 +97,7 @@ class Maze
   def plotmaze
     @offset.step(@y - 3, @increment) do |y|
       @offset.step(@x - 3, @increment) do |x|
-        if getpoint(x, y) == ROAD
+        if get_point(x, y) == ROAD
           result = maze_sub(x, y)
           next if result
         end
@@ -137,18 +137,18 @@ class Maze
   def init_array(x, y)
     x.times do |xx|
       y.times do |yy|
-        setpoint(xx, yy, ROAD)
+        set_point(xx, yy, ROAD)
       end
     end
 
     (@margin..(@x - 2)).each do |i|
-      setpoint(i, 1, WALL)
-      setpoint(i, @y - 2, WALL)
+      set_point(i, 1, WALL)
+      set_point(i, @y - 2, WALL)
     end 
 
     (@margin..(@y - 2)).each do |j|
-      setpoint(1, j, WALL)
-      setpoint(@x - 2, j, WALL)
+      set_point(1, j, WALL)
+      set_point(@x - 2, j, WALL)
     end 
   end
 end

@@ -42,24 +42,24 @@ describe :Maze do
       expect(@maze.array_2d).to eq [[nil, nil, nil, nil, nil], [nil, 1, 1, 1, nil], [nil, 1, nil, 1, nil], [nil, 1, 1, 1, nil], [nil, nil, nil, nil, nil]]
     end
 
-    it :getpoint do
-      expect(@maze.getpoint(2, 3)).to eq 1
-      expect(@maze.getpoint(2, 2)).to eq nil
-      expect{@maze.getpoint(6, 6)}.to raise_error(NoMethodError)
+    it :get_point do
+      expect(@maze.get_point(2, 3)).to eq 1
+      expect(@maze.get_point(2, 2)).to eq nil
+      expect{@maze.get_point(6, 6)}.to raise_error(NoMethodError)
     end
 
-    it :setpoint do
-      @maze.setpoint(2, 3, nil)
-      expect(@maze.getpoint(2, 3)).to eq nil
-      @maze.setpoint(2, 3, 1)
-      expect(@maze.getpoint(2, 3)).to eq 1
+    it :set_point do
+      @maze.set_point(2, 3, nil)
+      expect(@maze.get_point(2, 3)).to eq nil
+      @maze.set_point(2, 3, 1)
+      expect(@maze.get_point(2, 3)).to eq 1
 
-      @maze.setpoint(3, 2, nil)
-      expect(@maze.getpoint(3, 2)).to eq nil
-      @maze.setpoint(3, 2, 1)
-      expect(@maze.getpoint(3, 2)).to eq 1
+      @maze.set_point(3, 2, nil)
+      expect(@maze.get_point(3, 2)).to eq nil
+      @maze.set_point(3, 2, 1)
+      expect(@maze.get_point(3, 2)).to eq 1
 
-      expect{@maze.setpoint(6, 6, 1)}.to raise_error(NoMethodError)
+      expect{@maze.set_point(6, 6, 1)}.to raise_error(NoMethodError)
     end
   end
 
