@@ -14,15 +14,12 @@
 # maze.output
 
 class Point
-  attr_accessor :point
+  attr_reader :output
 
   def initialize(char)
-    @point = char 
+    @output = char.freeze
   end
 
-  def output
-    print @point
-  end
 end
 
 class Maze
@@ -35,9 +32,22 @@ class Maze
     @road, @wall, @prewall = Point.new('　'),
                              Point.new('〓'),
                              Point.new('〓')
-    @depth, @offset        = 1.freeze,
-                             2.freeze
+    @depth, @offset        = 1, 2
     @array_2d = prepare_maze(@x, @y)
+  end
+
+  def get_point(x, y)
+    return @array_2d[x][y] 
+  end
+
+  def set_point(x, y, point)
+    @array_2d[x][y] = point
+  end
+
+  def output
+    @array_2d.each do |line|
+      puts line.map {|c| c.output }.join
+    end
   end
 
   private
