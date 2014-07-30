@@ -59,12 +59,12 @@ class Maze
 
   def build_maze
     binding.pry
-    x = (@offset..(@x - @offset)).select { |dx| dx % 2 == 0 }
-    y = (@offset..(@y - @offset)).select { |dy| dy % 2 == 0 }
-    y.each do |yy|
-      x.each do |xx|
-        next if get_point(xx, yy) == @wall.output
-        until plot_maze(xx, yy)
+    even_x = (@offset..(@x - @offset)).select { |dx| dx % 2 == 0 }
+    even_y = (@offset..(@y - @offset)).select { |dy| dy % 2 == 0 }
+    even_y.each do |y|
+      even_x.each do |x|
+        next if get_point(x, y) == @wall.output
+        until plot_maze(x, y)
         end
       end
     end
