@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
+require 'pry'
+
 #= 迷路自動作成ライブラリ
 # 「壁伸ばし法」に基づく
 # 参考: http://aanda.system.to/maze/wmaze.txt
-#== 使用例 (main.rbより)
+
 # x, y = 31, 41
 #
 # x += 1 if x.even?
@@ -37,7 +39,7 @@ class Maze
   end
 
   def get_point(x, y)
-    return @array_2d[x][y] 
+    return @array_2d[x][y].output 
   end
 
   def set_point(x, y, point)
@@ -46,7 +48,25 @@ class Maze
 
   def output
     @array_2d.each do |line|
+      # このc.outputはポリモーフィックになっているか?
       puts line.map {|c| c.output }.join
+    end
+  end
+
+  def plot_maze(x, y)
+    true
+  end
+
+  def build_maze
+    binding.pry
+    x = (@offset..(@x - @offset)).select { |dx| dx % 2 == 0 }
+    y = (@offset..(@y - @offset)).select { |dy| dy % 2 == 0 }
+    y.each do |yy|
+      x.each do |xx|
+        next if get_point(xx, yy) == @wall.output
+        until plot_maze(xx, yy)
+        end
+      end
     end
   end
 

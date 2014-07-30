@@ -59,19 +59,19 @@ describe :Maze do
     end
 
     it :get_point do
-      expect(@maze.get_point(0, 0)).to eq @w
-      expect(@maze.get_point(1, 1)).to eq @r
-      expect(@maze.get_point(5, 1)).to eq @r
-      expect(@maze.get_point(6, 2)).to eq @w
+      expect(@maze.get_point(0, 0)).to eq @w.output
+      expect(@maze.get_point(1, 1)).to eq @r.output
+      expect(@maze.get_point(5, 1)).to eq @r.output
+      expect(@maze.get_point(6, 2)).to eq @w.output
       expect{@maze.get_point(7, 4)}.to raise_error(NoMethodError)
       expect{@maze.get_point(7, 7)}.to raise_error(NoMethodError)
     end
 
     it :set_point do
       @maze.set_point(0, 0, @maze.road)
-      expect(@maze.get_point(0, 0)).to eq @r
+      expect(@maze.get_point(0, 0)).to eq @r.output
       @maze.set_point(6, 2, @maze.road)
-      expect(@maze.get_point(5, 1)).to eq @r
+      expect(@maze.get_point(5, 1)).to eq @r.output
       expect{@maze.set_point(7, 7, @maze.road)}.to raise_error(NoMethodError)
     end
   end
