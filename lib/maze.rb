@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
-require 'pry'
-
 #= 迷路自動作成ライブラリ
 # 「壁伸ばし法」に基づく
 # 参考: http://aanda.system.to/maze/wmaze.txt
