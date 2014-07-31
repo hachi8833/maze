@@ -61,7 +61,31 @@
 
   <ul class="link-list">
   
+    <li><a href="../README_md.html">README</a>
+  
     <li><a href="../doc/Maze_html.html">Maze.html</a>
+  
+    <li><a href="../doc/doc/Maze_html_html.html">Maze_html.html</a>
+  
+    <li><a href="../doc/doc/fonts_css_html.html">fonts_css.html</a>
+  
+    <li><a href="../doc/doc/index_html_html.html">index_html.html</a>
+  
+    <li><a href="../doc/doc/js/darkfish_js_html.html">darkfish_js.html</a>
+  
+    <li><a href="../doc/doc/js/jquery_js_html.html">jquery_js.html</a>
+  
+    <li><a href="../doc/doc/js/navigation_js_html.html">navigation_js.html</a>
+  
+    <li><a href="../doc/doc/js/search_index_js_html.html">search_index_js.html</a>
+  
+    <li><a href="../doc/doc/js/search_js_html.html">search_js.html</a>
+  
+    <li><a href="../doc/doc/js/searcher_js_html.html">searcher_js.html</a>
+  
+    <li><a href="../doc/doc/rdoc_css_html.html">rdoc_css.html</a>
+  
+    <li><a href="../doc/doc/table_of_contents_html_html.html">table_of_contents_html.html</a>
   
     <li><a href="../doc/fonts_css.html">fonts.css</a>
   
@@ -147,9 +171,20 @@ role=“navigation”&gt;</p>
 
 <p>&lt;/div&gt;</p>
 
-<pre>&lt;/div&gt;
+<pre>&lt;/div&gt;</pre>
 
-&lt;div id=&quot;class-metadata&quot;&gt;
+<p>&lt;div class=“nav-section”&gt;</p>
+
+<pre>&lt;h3&gt;Table of Contents&lt;/h3&gt;
+
+&lt;ul class=&quot;link-list&quot; role=&quot;directory&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#class-Maze-label-%E8%BF%B7%E8%B7%AF%E8%87%AA%E5%8B%95%E4%BD%9C%E6%88%90%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA&quot;&gt;迷路自動作成ライブラリ&lt;/a&gt;
+  &lt;li&gt;&lt;a href=&quot;#class-Maze-label-%E4%BD%BF%E7%94%A8%E4%BE%8B+%28main.rb%E3%82%88%E3%82%8A%29&quot;&gt;使用例 (main.rbより)&lt;/a&gt;
+&lt;/ul&gt;</pre>
+
+<p>&lt;/div&gt;</p>
+
+<pre>&lt;div id=&quot;class-metadata&quot;&gt;
 
   &lt;div id=&quot;parent-class-section&quot; class=&quot;nav-section&quot;&gt;
 &lt;h3&gt;Parent&lt;/h3&gt;
@@ -206,6 +241,18 @@ href=“#class-Maze-label-%E8%BF%B7%E8%B7%AF%E8%87%AA%E5%8B%95%E4%BD%9C%E6%88%90
 
 <p>&lt;pre&gt;「壁伸ばし法」に基づく 参考: <a
 href="http://aanda.system.to/maze/wmaze.txt</pre">aanda.system.to/maze/wmaze.txt</pre</a>&gt;</p>
+
+<p>&lt;h2
+id=“class-Maze-label-%E4%BD%BF%E7%94%A8%E4%BE%8B+%28main.rb%E3%82%88%E3%82%8A%29”&gt;使用例
+(main.rbより)&lt;span&gt;&lt;a
+href=“#class-Maze-label-%E4%BD%BF%E7%94%A8%E4%BE%8B+%28main.rb%E3%82%88%E3%82%8A%29”&gt;&amp;para;&lt;/a&gt;
+&lt;a href=“#documentation”&gt;&amp;uarr;&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;</p>
+
+<p>&lt;pre&gt;x, y = 31, 41</p>
+
+<p>x += 1 if x.even? y += 1 if y.even? maze = <a
+href="../Maze.html#method-c-new">Maze.new</a>(x, y) maze.plotmaze
+maze.output&lt;/pre&gt;</p>
 
 <pre>&lt;/section&gt;
 
@@ -266,7 +313,7 @@ href="http://aanda.system.to/maze/wmaze.txt</pre">aanda.system.to/maze/wmaze.txt
 
       &lt;div class=&quot;method-description&quot;&gt;
 
-      &lt;p&gt;初期値x, y&lt;/p&gt;
+      &lt;p&gt;初期値x, y。正の奇数かつ7以上にすること&lt;/p&gt;
 
       &lt;/div&gt;
     &lt;/div&gt;
@@ -279,7 +326,7 @@ href="http://aanda.system.to/maze/wmaze.txt</pre">aanda.system.to/maze/wmaze.txt
 
       &lt;div class=&quot;method-description&quot;&gt;
 
-      &lt;p&gt;初期値x, y&lt;/p&gt;
+      &lt;p&gt;初期値x, y。正の奇数かつ7以上にすること&lt;/p&gt;
 
       &lt;/div&gt;
     &lt;/div&gt;
@@ -306,7 +353,7 @@ href="http://aanda.system.to/maze/wmaze.txt</pre">aanda.system.to/maze/wmaze.txt
         &lt;p&gt;初期化 (prepare_aryとinit_aryもこの中から呼ばれている)&lt;/p&gt;
 
         &lt;div class=&quot;method-source-code&quot; id=&quot;new-source&quot;&gt;
-          &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 24&lt;/span&gt;</pre>
+          &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 32&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;initialize&lt;/span&gt;(&lt;span
@@ -347,7 +394,7 @@ class=“ruby-identifier”&gt;y&lt;/span&gt;)</p>
       &lt;p&gt;座標にあるものを調べる&lt;/p&gt;
 
       &lt;div class=&quot;method-source-code&quot; id=&quot;getpoint-source&quot;&gt;
-        &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 69&lt;/span&gt;</pre>
+        &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 77&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;getpoint&lt;/span&gt;(&lt;span
@@ -379,7 +426,7 @@ class=“ruby-identifier”&gt;y&lt;/span&gt;)</p>
     &lt;p&gt;配列内容を初期化 最外周は道になるので、外側の壁は1つ内側になる&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;init_ary-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 50&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 58&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;init_ary&lt;/span&gt;(&lt;span
@@ -425,7 +472,7 @@ class=“ruby-identifier”&gt;y&lt;/span&gt;)</p>
     &lt;p&gt;壁を1つ作成、伸ばせるところまで伸ばす&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;maze_sub-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 79&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 87&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;maze_sub&lt;/span&gt;(&lt;span
@@ -499,7 +546,7 @@ class=“ruby-identifier”&gt;y&lt;/span&gt;)</p>
     &lt;p&gt;aryを整形して出力&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;output-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 138&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 146&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;output&lt;/span&gt;</p>
@@ -541,7 +588,7 @@ class=“ruby-identifier”&gt;output&lt;/span&gt;</p>
     &lt;p&gt;壁の開始地点をトラバースしてmaze_subを呼び続ける&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;plotmaze-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 126&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 134&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;plotmaze&lt;/span&gt;</p>
@@ -578,7 +625,7 @@ class=“ruby-identifier”&gt;plotmaze&lt;/span&gt;</p>
     &lt;p&gt;配列確保&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;prepare_ary-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 31&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 39&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;prepare_ary&lt;/span&gt;(&lt;span
@@ -623,7 +670,7 @@ class=“ruby-identifier”&gt;y&lt;/span&gt;)</p>
     &lt;p&gt;座標に壁などを設置&lt;/p&gt;
 
     &lt;div class=&quot;method-source-code&quot; id=&quot;setpoint-source&quot;&gt;
-      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 74&lt;/span&gt;</pre>
+      &lt;pre&gt;&lt;span class=&quot;ruby-comment&quot;&gt;# File lib/maze.rb, line 82&lt;/span&gt;</pre>
 
 <p>&lt;span class=“ruby-keyword”&gt;def&lt;/span&gt; &lt;span
 class=“ruby-identifier”&gt;setpoint&lt;/span&gt;(&lt;span
