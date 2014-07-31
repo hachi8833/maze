@@ -30,6 +30,8 @@ class Maze
 
   #初期化
   def initialize(x, y)
+    x += 1 if x.even?
+    y += 1 if y.even?
     @x = x.freeze
     @y = y.freeze
     @road, @wall, @prewall = Point.new('　'),
