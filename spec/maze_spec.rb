@@ -38,15 +38,12 @@ describe :Maze do
     end
 
     context "デフォルト迷路を正常に出力できる" do
-      before { `echo "#!/usr/bin/env ruby\n# coding: utf-8\nrequire './lib/maze'\nmaze = Maze.new(7, 5)\nmaze.output" >> test.rb` }
-      after { `rm -rf test.rb`}
-
+      before { @maze = Maze.new(7,5) }
       it :output do
         result = "〓〓〓〓〓\n〓　　　〓\n〓　　　〓\n〓　　　〓\n〓　　　〓\n〓　　　〓\n〓〓〓〓〓\n"
-
-        expect(`ruby test.rb`).to eq result
+        expect { @maze.output }.to output(result).to_stdout
       end
-    end 
+    end
   end
 
   context "メソッドの単体テスト" do
